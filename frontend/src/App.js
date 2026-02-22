@@ -9,7 +9,7 @@ import UploadPage from "@/pages/UploadPage";
 import QueryPage from "@/pages/QueryPage";
 import DocumentsPage from "@/pages/DocumentsPage";
 import AdminPage from "@/pages/AdminPage";
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from "sonner";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 export const API = `${BACKEND_URL}/api`;
