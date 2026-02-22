@@ -1,0 +1,102 @@
+{
+  "project_name": "Project Obsidian - Offline Multimodal RAG",
+  "design_philosophy": {
+    "identity": "The Sentinel",
+    "core_vibe": "Military Intelligence meets Cyberpunk Pragmatism. High contrast, data-dense, zero fluff.",
+    "emotional_tone": ["Authority", "Secrecy", "Precision", "Clarity"],
+    "visual_style": "Dark Mode Only. Matte blacks, electric accents, razor-sharp edges."
+  },
+  "typography": {
+    "font_imports": [
+      "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&display=swap",
+      "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap",
+      "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
+    ],
+    "headings": {
+      "family": "Barlow Condensed, sans-serif",
+      "weight": "700",
+      "style": "Uppercase, tracking-wide"
+    },
+    "body": {
+      "family": "IBM Plex Sans, sans-serif",
+      "weight": "400"
+    },
+    "mono": {
+      "family": "JetBrains Mono, monospace"
+    }
+  },
+  "colors": {
+    "palette_name": "Electric Security",
+    "backgrounds": {
+      "app_bg": "#050505",
+      "panel_bg": "#0A0A0A",
+      "card_bg": "#111111",
+      "sidebar_bg": "#000000"
+    },
+    "accents": {
+      "primary": "#3B82F6", 
+      "primary_glow": "0 0 20px rgba(59, 130, 246, 0.5)",
+      "critical": "#FF3B30",
+      "safe": "#10B981",
+      "warning": "#F59E0B"
+    },
+    "text": {
+      "primary": "#F3F4F6",
+      "secondary": "#9CA3AF",
+      "muted": "#4B5563"
+    },
+    "borders": {
+      "default": "rgba(255, 255, 255, 0.1)",
+      "active": "rgba(59, 130, 246, 0.5)"
+    }
+  },
+  "layout_strategy": {
+    "global": "Fluid width, max-w-[1920px] mx-auto. 100vh height for dashboard (no scroll on body if possible, scroll in panels).",
+    "grid_system": "Bento Grid Mode B (High Density). 12-column grid.",
+    "spacing": "Compact. p-4 is standard. Gap-4 between widgets.",
+    "sidebar": "Fixed left, 64px (collapsed) or 240px (expanded). Darkest shade.",
+    "containers": "Sharp edges or max rounded-sm (4px)."
+  },
+  "components": {
+    "buttons": {
+      "style": "Sharp or slightly rounded (rounded-sm). Uppercase text. Hover: Glow effect.",
+      "variants": {
+        "primary": "bg-blue-600 hover:bg-blue-500 text-white shadow-[0_0_15px_rgba(37,99,235,0.3)]",
+        "ghost": "hover:bg-white/5 text-gray-300"
+      }
+    },
+    "cards": {
+      "style": "bg-card border border-white/5 rounded-md shadow-none. Hover: border-white/10.",
+      "header": "Border-b border-white/5 p-4 flex justify-between items-center"
+    },
+    "inputs": {
+      "style": "bg-black/50 border-white/10 focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 rounded-sm"
+    },
+    "navigation": {
+      "active_state": "border-l-2 border-blue-500 bg-white/5 text-white"
+    },
+    "charts": {
+      "library": "Recharts (Shadcn)",
+      "theme": "Dark mode optimized. Grid lines: stroke='#333'. Tooltips: bg-black border-white/10."
+    }
+  },
+  "visual_enhancers": {
+    "glassmorphism": "Use sparingly. Only for floating panels (Chat citations). backdrop-blur-md bg-black/80 border border-white/10.",
+    "scanlines": "Optional: Overlay a pointer-events-none div with repeating linear gradient for a 'monitor' feel on the dashboard.",
+    "glows": "Use box-shadow for 'active' states, not gradients.",
+    "loading": "ASCII spinners or 'System Initializing...' text sequences."
+  },
+  "image_urls": {
+    "login_background": "https://images.unsplash.com/photo-1762278804941-27ff5cba5a2e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjV8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMGRpZ2l0YWwlMjBuZXR3b3JrJTIwZGFyayUyMGJhY2tncm91bmR8ZW58MHx8fHwxNzcxNzI0Mzk1fDA&ixlib=rb-4.1.0&q=85",
+    "logo_placeholder": "Use text 'OBSIDIAN' in Barlow Condensed font."
+  },
+  "universal_guidelines": [
+    "NEVER use light mode.",
+    "NEVER use rounded-xl or rounded-2xl. Maximum rounded-md.",
+    "Avoid purple/pink unless it's a specific 'Threat' indicator.",
+    "Use 'data-testid' on all interactive elements.",
+    "Animations must be fast (150ms-200ms). No slow drifts.",
+    "Scrollbars: Custom thin style, dark gray thumb, black track."
+  ],
+  "instructions_to_main_agent": "Implement the design system by updating tailwind.config.js first. Create a 'layout.js' that enforces the sidebar + main content structure. Use the specified fonts. For the 'Ask' page, build a split-pane layout (Chat Left, Context Right). For the Dashboard, use the Bento Grid strategy."
+}
