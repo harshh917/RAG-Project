@@ -320,6 +320,24 @@ async def upload_document(file: UploadFile = File(...), user=Depends(auth_depend
             await db.chunks.insert_one(chunk)
             chunks_stored += 1
 
+    # Fallback: if no text extracted, store a metadata chunk
+    if chunks_stored == 0:
+        fallback_text = f"Document: {file.filename} (Type: {file_type}, Size: {len(content)} bytes). No text content could be extracted from this file."
+        chunk = {
+            "chunk_id": str(uuid.uuid4()),
+            "document_id": doc_id,
+            "text": fallback_text,
+            "filename": file.filename,
+            "file_type": file_type,
+            "page_number": 1,
+            "timestamp": None,
+            "keywords": compute_keywords(fallback_text),
+            "chunk_index": 0,
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+        await db.chunks.insert_one(chunk)
+        chunks_stored = 1
+
     # Store document record
     document = {
         "id": doc_id,
