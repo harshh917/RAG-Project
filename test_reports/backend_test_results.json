@@ -1,0 +1,252 @@
+{
+  "timestamp": "2026-02-22T18:12:28.510983",
+  "total_tests": 13,
+  "passed_tests": 13,
+  "success_rate": 100.0,
+  "detailed_results": [
+    {
+      "name": "Health Check",
+      "method": "GET",
+      "endpoint": "",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "message": "Project Obsidian API",
+        "status": "operational"
+      },
+      "error": null
+    },
+    {
+      "name": "User Login",
+      "method": "POST",
+      "endpoint": "auth/login",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlYTI0ZTQ4MC1kNGVmLTQ3NjMtYjM4Mi03MGQ5ZDUxNTAwMzciLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NzIzODg3NDAuMTUzNjM0fQ.HPFudPHZbpP3yxPazu1lQzpHb1W-6hwRr5H3HTbJe-g",
+        "user": {
+          "id": "ea24e480-d4ef-4763-b382-70d9d5150037",
+          "username": "admin",
+          "email": "admin@obsidian.sec",
+          "role": "admin"
+        }
+      },
+      "error": null
+    },
+    {
+      "name": "Invalid Login",
+      "method": "POST",
+      "endpoint": "auth/login",
+      "expected_status": 401,
+      "actual_status": 401,
+      "success": true,
+      "response_data": {
+        "detail": "Invalid credentials"
+      },
+      "error": null
+    },
+    {
+      "name": "Get Current User",
+      "method": "GET",
+      "endpoint": "auth/me",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "id": "ea24e480-d4ef-4763-b382-70d9d5150037",
+        "username": "admin",
+        "email": "admin@obsidian.sec",
+        "role": "admin"
+      },
+      "error": null
+    },
+    {
+      "name": "File Upload",
+      "method": "POST",
+      "endpoint": "documents/upload",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "id": "24a9ee32-eead-46e9-9786-4a05924b2a7c",
+        "filename": "test_document.pdf",
+        "file_type": "pdf",
+        "total_chunks": 0,
+        "status": "empty"
+      },
+      "error": null
+    },
+    {
+      "name": "List Documents",
+      "method": "GET",
+      "endpoint": "documents",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": [
+        {
+          "id": "24a9ee32-eead-46e9-9786-4a05924b2a7c",
+          "filename": "test_document.pdf",
+          "file_type": "pdf",
+          "file_size": 89,
+          "total_chunks": 0,
+          "status": "empty",
+          "uploaded_by": "ea24e480-d4ef-4763-b382-70d9d5150037",
+          "uploaded_by_name": "admin",
+          "uploaded_at": "2026-02-22T18:12:20.953244+00:00"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "Query RAG System",
+      "method": "POST",
+      "endpoint": "query",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "answer": "No relevant documents were found in the context provided. Therefore, there is no information available from uploaded documents.",
+        "citations": [],
+        "query_id": "fa642e37-34c7-42dd-967e-b4d0aa25b653"
+      },
+      "error": null
+    },
+    {
+      "name": "Query History",
+      "method": "GET",
+      "endpoint": "query/history",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": [
+        {
+          "id": "fa642e37-34c7-42dd-967e-b4d0aa25b653",
+          "query": "What information is available in the uploaded documents?",
+          "answer": "No relevant documents were found in the context provided. Therefore, there is no information available from uploaded documents.",
+          "citations": [],
+          "user_id": "ea24e480-d4ef-4763-b382-70d9d5150037",
+          "username": "admin",
+          "created_at": "2026-02-22T18:12:27.619107+00:00"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "Analytics Stats",
+      "method": "GET",
+      "endpoint": "analytics/stats",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "total_documents": 1,
+        "total_chunks": 0,
+        "total_queries": 1,
+        "total_users": 1,
+        "file_distribution": {
+          "pdf": 1
+        },
+        "recent_queries": [
+          {
+            "query": "What information is available in the uploaded documents?",
+            "username": "admin",
+            "created_at": "2026-02-22T18:12:27.619107+00:00"
+          }
+        ],
+        "query_by_date": [
+          {
+            "date": "2026-02-22",
+            "count": 1
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "name": "Admin Audit Logs",
+      "method": "GET",
+      "endpoint": "admin/audit-logs",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": [
+        {
+          "id": "56da727a-ce0d-457a-a9cc-81d5cbf992bb",
+          "action": "query",
+          "user_id": "ea24e480-d4ef-4763-b382-70d9d5150037",
+          "details": "Query: What information is available in the uploaded documents?",
+          "timestamp": "2026-02-22T18:12:27.621042+00:00"
+        },
+        {
+          "id": "6a9d0488-9c1b-4282-8844-121e7d25cdbf",
+          "action": "document_upload",
+          "user_id": "ea24e480-d4ef-4763-b382-70d9d5150037",
+          "details": "Uploaded test_document.pdf (0 chunks)",
+          "timestamp": "2026-02-22T18:12:20.954323+00:00"
+        },
+        {
+          "id": "5d6a3557-55cb-4d3a-9b57-8f3d1a1e2d18",
+          "action": "user_login",
+          "user_id": "ea24e480-d4ef-4763-b382-70d9d5150037",
+          "details": "User admin logged in",
+          "timestamp": "2026-02-22T18:12:20.153809+00:00"
+        },
+        {
+          "id": "cdee390d-f453-41a7-a225-0b171c59f075",
+          "action": "user_register",
+          "user_id": "ea24e480-d4ef-4763-b382-70d9d5150037",
+          "details": "User admin registered",
+          "timestamp": "2026-02-22T18:10:38.308479+00:00"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "Admin Rebuild Index",
+      "method": "POST",
+      "endpoint": "admin/rebuild-index",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "message": "Index rebuilt for 0 chunks",
+        "total_chunks": 0
+      },
+      "error": null
+    },
+    {
+      "name": "Admin Users List",
+      "method": "GET",
+      "endpoint": "admin/users",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": [
+        {
+          "id": "ea24e480-d4ef-4763-b382-70d9d5150037",
+          "username": "admin",
+          "email": "admin@obsidian.sec",
+          "role": "admin",
+          "created_at": "2026-02-22T18:10:38.302339+00:00"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "Delete Document",
+      "method": "DELETE",
+      "endpoint": "documents/24a9ee32-eead-46e9-9786-4a05924b2a7c",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "message": "Document deleted",
+        "id": "24a9ee32-eead-46e9-9786-4a05924b2a7c"
+      },
+      "error": null
+    }
+  ]
+}
