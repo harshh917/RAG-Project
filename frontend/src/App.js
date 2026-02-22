@@ -1,53 +1,109 @@
-import { useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import axios from "axios";
+import Layout from "@/components/Layout";
+import LoginPage from "@/pages/LoginPage";
+import DashboardPage from "@/pages/DashboardPage";
+import UploadPage from "@/pages/UploadPage";
+import QueryPage from "@/pages/QueryPage";
+import DocumentsPage from "@/pages/DocumentsPage";
+import AdminPage from "@/pages/AdminPage";
+import { Toaster } from "@/components/ui/sonner";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+export const API = `${BACKEND_URL}/api`;
 
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
+// Auth Context
+const AuthContext = createContext(null);
 
-  useEffect(() => {
-    helloWorldApi();
+export function useAuth() {
+  return useContext(AuthContext);
+}
+
+export function useApi() {
+  const { token } = useAuth();
+  const api = axios.create({
+    baseURL: API,
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  return api;
+}
+
+function AuthProvider({ children }) {
+  const [token, setToken] = useState(localStorage.getItem("obsidian_token"));
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const logout = useCallback(() => {
+    setToken(null);
+    setUser(null);
+    localStorage.removeItem("obsidian_token");
   }, []);
 
+  useEffect(() => {
+    if (token) {
+      axios
+        .get(`${API}/auth/me`, { headers: { Authorization: `Bearer ${token}` } })
+        .then((res) => {
+          setUser(res.data);
+          setLoading(false);
+        })
+        .catch(() => {
+          logout();
+          setLoading(false);
+        });
+    } else {
+      setLoading(false);
+    }
+  }, [token, logout]);
+
+  const login = (newToken, userData) => {
+    localStorage.setItem("obsidian_token", newToken);
+    setToken(newToken);
+    setUser(userData);
+  };
+
   return (
-    <div>
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
+    <AuthContext.Provider value={{ token, user, login, logout, loading }}>
+      {children}
+    </AuthContext.Provider>
   );
-};
+}
+
+function ProtectedRoute({ children }) {
+  const { token, loading } = useAuth();
+  if (loading) return <div className="h-screen bg-[#050505] flex items-center justify-center text-gray-500 font-mono text-sm">SYSTEM INITIALIZING...</div>;
+  if (!token) return <Navigate to="/login" replace />;
+  return children;
+}
 
 function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
+        <Toaster position="top-right" theme="dark" />
         <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
+          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/*"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <Routes>
+                    <Route path="/" element={<DashboardPage />} />
+                    <Route path="/upload" element={<UploadPage />} />
+                    <Route path="/query" element={<QueryPage />} />
+                    <Route path="/documents" element={<DocumentsPage />} />
+                    <Route path="/admin" element={<AdminPage />} />
+                  </Routes>
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
         </Routes>
-      </BrowserRouter>
-    </div>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 
