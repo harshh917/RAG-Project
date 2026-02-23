@@ -73,9 +73,4 @@ Build a fully offline multimodal RAG system capable of ingesting PDF, DOCX, imag
 - CLIP image embeddings
 - Local LLM support (llama.cpp with Mistral/LLaMA)
 
-## Next Tasks
-1. Add real file-specific handling improvements
-2. Implement streaming LLM responses
-3. Add export to PDF functionality
-4. Improve search quality with better text matching
-5. Add cross-modal search capability
+
